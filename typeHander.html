@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>typeHander</title>
+      <style>
+         body{
+         margin: 0px;
+         padding: 0px;
+         }
+         #bodyDiv{
+         background-color: grey;
+         width: 99.2vw;
+         height: 98.5vh;
+         position: relative;
+         border: 4px solid goldenrod;
+         overflow-x: hidden;
+         overflow-y: auto;
+         }
+         #containerDiv{
+         background-color: rgb(249, 241, 198);
+         width: 95%;
+         height: 90%;
+         position: absolute;
+         top: 4%; 
+         left: 2%;  
+         margin: auto; 
+         border-radius: 20px ;
+         border: 4px solid goldenrod;
+         }
+         #inputDiv{
+         position: absolute;
+         top:30%;
+         text-align: center;
+         /* background-color: white; */
+         width: 70%;
+         height: 15%;
+         left: 19%;
+         border-radius: 20px;
+         /* border: 10px solid black; */
+         }
+         #input{
+         width: 90%;
+         height: 45%;
+         position: absolute;
+         top: 21%; 
+         right: 10%; 
+         border-radius: 10px ;
+         border: 3px solid gold;
+         font-size: 30px;
+         text-indent: 40%;
+         }
+         #input:focus{
+         outline-color: lightcoral;
+         }
+         #wordContainer{
+         width: 50%;
+         height: 8%;
+         position: absolute;
+         top: 15%; 
+         left: 25%; 
+         background-color: wheat;
+         border: 2px solid cyan;
+         border-radius: 10px;
+         overflow-x: auto;
+         overflow-y: hidden;
+         }
+         #fingerDiv{
+         position: absolute;
+         top:50%;
+         left: 25%;
+         text-align: center;
+         background-color:grey;
+         width: 50%;
+         height: 13%;
+         border: 2px solid firebrick;
+         border-radius: 5px;
+         }
+         .fingDiv{
+         width: 7%;
+         height: 90%;
+         background-color: white;
+         display: inline-block;
+         margin: 1px;
+         border: 2px solid black;
+         border-radius: 5px;
+         overflow: hidden;
+         font-size: 30px;
+         line-height: 2;
+         /* visibility:hidden; */
+         opacity: 0.4;
+         }
+         span{
+         text-align: center;
+         position: absolute;
+         top: 2%;
+         width:30px;
+         font-size: 30px;
+         border: 2px solid gold;
+         border-radius: 5px;
+         background-color: white;
+         }
+         .addGreen{
+         color: green;
+         }
+         .addRed{
+         color: Red;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="bodyDiv">
+         <div id="containerDiv">
+            <div id="wordContainer">
+            </div>
+            <div id="inputDiv">
+               <input type="text" id="input">
+            </div>
+            <div id="fingerDiv">
+               <div id ="div1" class="fingDiv">𝟙</div>
+               <div id ="div2" class="fingDiv">𝟚</div>
+               <div id ="div3" class="fingDiv">𝟛</div>
+               <div id ="div4" class="fingDiv">𝟜</div>
+               <div id ="divS" class="fingDiv">𖣯</div>
+               <div id ="div5" class="fingDiv">𝟡</div>
+               <div id ="div6" class="fingDiv">𝟠</div>
+               <div id ="div7" class="fingDiv">𝟟</div>
+               <div id ="div8" class="fingDiv">𝟞</div>
+            </div>
+         </div>
+      </div>
+      <script>
+
+      // How typeHandler works?
+      // --------------------- START ----------------------
+      // 1.System choses 30 random words from the paragraph and print it one by one on the screen.
+      // 2.Displays the finger_division(the correct finger for typing) for the letter to be typed.
+      // 3.Input element checks for every letter that is typed in.
+      // 4.If letters matches, change the span element to green. If not change to red, until input is entered correctly.
+      // 5.If letters matches,change the  finger_division for the new letter and continue....
+      // 6.If every letter in a word is typed correctly,System automatically change to new letter.
+      // 7.Repeat the process untill all words are typed.
+      // --------------------- THE END ----------------------
+
+         window.onload = (event) => {                          // onload event called when webpage loaded completly
+            document.getElementById("input").focus();              
+            document.getElementById("input").select();
+            checkLetters((word[index]));                       // after the webpage is loaded  checkLetters((word[index])) function called
+            };
+
+         const source = document.getElementById('input');      // input element 
+         window.index = 0;                                     // index of words 
+         window.wordIndex = 0;                                 // index of words stored in esArray
+
+         var essay ="";                                        // essay variable declared, will be used for concatenation
+
+         essay += "word essay derives French infinitive essayer try attempt English first meant trial still alternative meaning Frenchman Michel Montaigne author describe work essays ";
+         essay += "used term characterize these attempts put thoughts writing Subsequently defined variety ways One definition prose composition focused subject discussion long systematic "; 
+         essay += "discourse difficult define genre which fall leading essayist gives guidance notes that literary device saying almost everything about anything tradition short piece Furthermore ";
+         essay += "Huxley argues belong species whose extreme variability studied effectively within three poled frame reference These poles worlds exist personal autobiographical essayists feel comfortable ";
+         essay += "pole write fragments reflective autobiography look world through keyhole antidote description objective factual concrete particular speak directly themselves turn their attention ";
+         essay += "outward some scientific political theme art consists setting forth passing judgment upon drawing general conclusions relevant data abstract universal find those who high abstractions "; 
+         essay += "never seldom mention facts experience Huxley adds most satisfying make best possible";     
+         
+         var Array = essay.split(" ");                          // convert "essay" => string to "Array" => list
+            //alert(Array.length);                              // lenght of Array = 146
+             var minimumWords = 0;                              // minimum no. of words to be loaded = 0
+             window.maximumWords = 30;                          // maximun no. of words to be loaded = 30
+             var numList = Math.floor(Math.random() * 116);     // generate a random number between 0 to 116
+             var esArray = [];                                  // empty list to store "maximumWords/30" no. of words 
+             for(i=minimumWords;i<maximumWords;i++){
+                 esArray.push(Array[numList + i]);              // pushed "maximumWords/30" no. of randomly chosen words to "esArray"
+             }
+         
+         //alert(esArray);
+         
+         function createWord(){                                  // function "createWord" to display the "index" of esArray word dynamically
+                                                                 // and center them inside div element
+         window.word = esArray[wordIndex];                       // load the word w.r.t "wordIndex" inside "word"
+         
+         var cent = - word.length;
+         maximumWords = -cent;
+         numList = [];                                            // numList to store values of center list like(-51,-17,17) 
+         while (cent<0)
+         {
+         if(cent%2 !=0)
+         {
+         numList.push(cent * 17);
+         }
+         cent++;
+         
+         }
+         cent++;
+         while (cent<maximumWords){
+         
+         if(cent%2 !=0){
+         numList.push(cent * 17);}
+         cent++;
+         }
+         
+         window.spanList=[];                                      // create spanList to store list of span id's
+         
+           for (i=0;i<word.length;i++){        
+             window.id ="span" + i;                               // dynamically create id's for span element 
+             spanList.push(id);        
+             var lefty = "calc(50% + "
+             var righty = numList[i] + "px)";                     
+             make_middle = lefty + righty;                       // created left style value for span element
+             const Span_element = document.createElement("span");// created span element dynamically
+             Span_element.id = id;                               // given id to span element created 
+             const node = document.createTextNode(word[i]);      // added ith index letter to the span element created
+             Span_element.appendChild(node);                     // added the ith index letter to the span
+             const element = document.getElementById("wordContainer");
+             element.appendChild(Span_element);                  // added the span element created with word, to "wordContainer" div element 
+             document.getElementById(id).style.left = make_middle;// added left style to ith span created  
+         
+         }
+         } 
+         
+         createWord();                                            // called createWord function to create word in "wordContainer" div  
+         
+         function checkLetters(searchLetter){                     // "checkLetter" to check if a letter if it is in the totalList
+         
+         var totalList =[["q","a","z","Q","A","Z"],["w","s","x","W","S","X"], ["e","d","c","E","D","C"],
+         ["r","f","v","t","g","b","R","F","V","T","G","B"],["y","h","n","u","j","m","Y","H","N","U","J","M"],
+         ["i","k","I","K"],["o","l","O","L"],["p","P"]];
+                  
+         var numberFing = 0;
+         window.divShow ="";
+         
+         for(i=0;i<totalList.length;i++){
+         
+            if(totalList[i].includes(searchLetter)){
+                numberFing = i+1;
+            }     
+         }
+         
+         switch (numberFing){                                     // switch statement to determine which list the "searchLetter" is at
+            case 1:  
+                divShow = document.getElementById("div1");        // if the "searchLetter" is at any of these cases change its opacity
+                divShow.style.opacity = 1;
+               //divShow.style.visibility = "visible"; 
+         
+                break;
+            case 2:
+               divShow = document.getElementById("div2")
+               divShow.style.opacity = 1;
+               //divShow.style.visibility = "visible"; 
+         
+                break;
+            case 3:
+               divShow = document.getElementById("div3")
+               divShow.style.opacity = 1;
+               //divShow.style.visibility = "visible"; 
+               
+                break;
+            case 4:
+               divShow = document.getElementById("div4")
+               divShow.style.opacity = 1;
+               //divShow.style.visibility = "visible"; 
+         
+                break;
+            case 5:
+               divShow = document.getElementById("div5")
+               divShow.style.opacity = 1;      
+               //divShow.style.visibility = "visible"; 
+         
+                break;
+            case 6:
+               divShow = document.getElementById("div6")
+               divShow.style.opacity = 1; 
+               //divShow.style.visibility = "visible"; 
+             
+                break;
+            case 7:
+               divShow = document.getElementById("div7")
+               divShow.style.opacity = 1;
+               //divShow.style.visibility = "visible"; 
+         
+                break;
+            case 8:
+            divShow = document.getElementById("div8")
+            divShow.style.opacity = 1; 
+            //divShow.style.visibility = "visible"; 
+         
+                break;
+         
+            default:
+                //alert("Default Triggered");
+                break;
+         }
+         }
+                 
+         const inputHandler = function(e) {                         // inputHandler to check input element every time when changed
+            var inputValue = e.target.value;
+            spanID = spanList[index];
+            
+            if(inputValue[index] == word[index]){                   // if input value is equal to word in span it change to green
+               document.getElementById(spanID).style.color = "green";
+               document.getElementById(spanID).style.borderColor = "green";
+               divShow.style.opacity = 0.4;                         // change back the opacity to 0.4
+                index++; 
+                checkLetters((word[index]));                        // recall the checkLetter function to start the process again    
+            }
+            else  if(inputValue[index] != word[index]){             // if input value is not equal to word in span it change to red
+               document.getElementById(spanID).style.color = "red";
+               document.getElementById(spanID).style.borderColor = "red";             
+            }
+         
+            if(word.length == inputValue.length && word == inputValue){ // if all letters in a word is completed....
+              
+                document.getElementById("input").value = "";            // clear input value
+                index = 0;
+                for(i=0;i<spanList.length;i++){         
+                  document.getElementById(spanList[i]).remove();        // removed every span element in the "wordcontainer"
+                }
+                spanList = [];                                          // cleared spanList
+                wordIndex++;
+                createWord();                                           // called createWord function to start again
+                checkLetters((word[index]));                            // called checkLetter function to start again
+            }               
+         }
+         source.addEventListener('input', inputHandler);                // eventlistner calling
+         
+      </script>
+   </body>
+</html>
